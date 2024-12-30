@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts=Post::with('user')->orderBy('id','desc')->paginate(12);
+        $posts=Post::with('user')->orderBy('id','desc')->paginate(5);
         return view('dashboard',compact('posts'));
     }
 
