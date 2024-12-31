@@ -36,11 +36,17 @@ pipeline {
             }
         }
 
+        stage('Test Docker') {
+            steps {
+                sh 'docker ps'
+            }
+        }
+
         stage('Push to Docker Hub') {
             steps {
                 script {
                     sh """
-                    echo "$DOCKERHUB_CREDENTIALS" | docker login -u your-dockerhub-username --password-stdin
+                    docker login -u thilakshan28
                     docker push $IMAGE_NAME:latest
                     docker logout
                     """
