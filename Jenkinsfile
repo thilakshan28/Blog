@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    docker login -u thilakshan28
+                    echo "$DOCKERHUB_CREDENTIALS" | docker login -u your-dockerhub-username --password-stdin
                     docker push $IMAGE_NAME:latest
                     docker logout
                     """
