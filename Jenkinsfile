@@ -14,9 +14,18 @@ pipeline {
             }
         }
 
+        // stage('Run Tests') {
+        //     steps {
+        //         script {
+        //             sh 'composer require --dev phpunit/phpunit:^10 --no-progress --prefer-dist'
+        //         }
+        //         sh './vendor/bin/phpunit'
+        //     }
+        // }
+
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:latest .'
+                sh 'docker build -t ${IMAGE_NAME}:latest .'
             }
         }
 
@@ -37,8 +46,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    echo $DOCKERHUB_CREDENTIALS_PSW" | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-                    docker push $IMAGE_NAME:latest
+                    echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
+                    docker push ${IMAGE_NAME}:latest
                     docker logout
                     """
                 }
