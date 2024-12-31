@@ -1,43 +1,39 @@
 pipeline {
     agent any
 
+    environment {
+        GITHUB_CREDENTIALS = 'github-credentials'  // Replace with your credentials ID
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/thilakshan28/Blog.git'
+                git credentialsId: "${GITHUB_CREDENTIALS}", url: 'https://github.com/username/laravel-app.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Install Dependencies') {
             steps {
-                script {
-                    docker.build('laravel-app')
-                }
+                sh 'composer install --no-dev'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'docker-compose exec app php artisan test'
+                sh './vendor/bin/phpunit'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t my-laravel-app:latest .'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh '''
-                docker-compose down
-                docker-compose up -d --build
-                '''
+                sh 'docker-compose up -d'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Deployment Successful!'
-        }
-        failure {
-            echo 'Build Failed!'
         }
     }
 }
