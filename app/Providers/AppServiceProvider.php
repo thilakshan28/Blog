@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Heading;
+use App\Expense;
+use App\Observers\ExpenseObserver;
+use App\Observers\HeadingObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
