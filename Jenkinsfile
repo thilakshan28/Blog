@@ -3,10 +3,11 @@ pipeline {
 
     environment {
         GITHUB_CREDENTIALS = 'github-credentials'
+        DOCKERHUB_CREDENTIALS = 'dockerhub-credentials'
+        IMAGE_NAME = 'thilakshan28/blog' 
     }
 
     stages {
-
         stage('Install Dependencies') {
             steps {
                 sh 'composer install --no-dev --no-progress --prefer-dist'
@@ -24,13 +25,26 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-laravel-app:latest .'
+                sh 'docker build -t $IMAGE_NAME:latest .'
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Locally') {
             steps {
-                sh 'docker compose up -d'
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d' 
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    sh """
+                    echo "$DOCKERHUB_CREDENTIALS" | docker login -u your-dockerhub-username --password-stdin
+                    docker push $IMAGE_NAME:latest
+                    docker logout
+                    """
+                }
             }
         }
     }
