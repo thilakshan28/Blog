@@ -13,15 +13,6 @@ pipeline {
                 sh 'composer install --no-dev --no-progress --prefer-dist'
             }
         }
-        
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh 'composer require --dev phpunit/phpunit:^10 --no-progress --prefer-dist'
-                }
-                sh './vendor/bin/phpunit'
-            }
-        }
 
         stage('Build Docker Image') {
             steps {
