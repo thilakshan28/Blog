@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-repo/laravel-app.git'
+                git branch: 'main', url: 'https://github.com/thilakshan28/Blog.git'
             }
         }
 
