@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-        GITHUB_CREDENTIALS = 'github-credentials'  // Replace with your credentials ID
+        GITHUB_CREDENTIALS = 'github-credentials'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: "${GITHUB_CREDENTIALS}", url: 'https://github.com/username/laravel-app.git'
+                git credentialsId: "${GITHUB_CREDENTIALS}", url: 'https://github.com/thilakshan28/Blog.gitt'
             }
         }
 
