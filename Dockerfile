@@ -1,42 +1,10 @@
-pipeline {
-    agent any
+FROM php:8.0
+RUN apt-get update -y && apt-get install -y openssl zip unzip git
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN docker-php-ext-install pdo mbstring
+WORKDIR /app
+COPY . /app
+RUN composer install
 
-    environment {
-        GITHUB_CREDENTIALS = 'github-credentials'
-    }
-
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/thilakshan28/Blog.git', credentialsId: "${GITHUB_CREDENTIALS}"
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'composer install --no-dev --no-progress --prefer-dist'
-            }
-        }
-        
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh 'composer require --dev phpunit/phpunit:^10 --no-progress --prefer-dist'
-                }
-                sh './vendor/bin/phpunit'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t my-laravel-app:latest .'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'docker-compose up -d'
-            }
-        }
-    }
-}
+CMD php artisan serve --host=0.0.0.0 --port=8181
+EXPOSE 8181
