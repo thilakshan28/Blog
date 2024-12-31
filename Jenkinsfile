@@ -6,11 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/thilakshan28/Blog.git', credentialsId: "${GITHUB_CREDENTIALS}"
-            }
-        }
 
         stage('Install Dependencies') {
             steps {
