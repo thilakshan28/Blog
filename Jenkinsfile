@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GITHUB_CREDENTIALS = 'github-credentials'
-        DOCKERHUB_CREDENTIALS = 'dockerhub-credentials'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         IMAGE_NAME = 'thilakshan28/blog' 
     }
 
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    echo "$DOCKERHUB_CREDENTIALS" | docker login -u your-dockerhub-username --password-stdin
+                    echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
                     docker push $IMAGE_NAME:latest
                     docker logout
                     """
