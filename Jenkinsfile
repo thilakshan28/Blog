@@ -28,7 +28,9 @@ pipeline {
                 script {
                     sh 'composer require --dev phpunit/phpunit:^10 --no-progress --prefer-dist'
                 }
-                sh './vendor/bin/phpunit'
+                withCredentials([usernamePassword(credentialsId: 'database-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD')]) {
+                    sh './vendor/bin/phpunit'
+                }
             }
         }
 
