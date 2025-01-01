@@ -14,6 +14,12 @@ pipeline {
             }
         }
 
+        stage('Run Migrations') {
+            steps {
+                sh 'php artisan migrate --force'
+            }
+        }
+
         stage('Run Tests') {
             steps {
                 script {

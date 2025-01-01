@@ -15,9 +15,6 @@ WORKDIR /app
 COPY . /app
 RUN composer install
 
-# Copy the rest of the application
-COPY . /app
-
 # Expose port
 EXPOSE 8000
 
