@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -7,23 +5,28 @@ services:
     volumes:
       - .:/var/www
     ports:
-      - "8000:9000"
+      - "8181:8000"
     networks:
       - laravel
+    environment:
+      APP_ENV: ${APP_ENV}
+      APP_DEBUG: ${APP_DEBUG}
 
   mysql:
     image: mysql:8.0
-    container_name: mysql
+    container_name: mysql-container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_NAME: mysql
     ports:
-      - "${DOCKER_DB_PORT}:3306"
+      - "3307:3306"
     networks:
       - laravel
 
 networks:
   laravel:
+    driver: bridge

@@ -14,14 +14,14 @@ pipeline {
             }
         }
 
-        // stage('Run Tests') {
-        //     steps {
-        //         script {
-        //             sh 'composer require --dev phpunit/phpunit:^10 --no-progress --prefer-dist'
-        //         }
-        //         sh './vendor/bin/phpunit'
-        //     }
-        // }
+        stage('Run Tests') {
+            steps {
+                script {
+                    sh 'composer require --dev phpunit/phpunit:^10 --no-progress --prefer-dist'
+                }
+                sh './vendor/bin/phpunit'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
