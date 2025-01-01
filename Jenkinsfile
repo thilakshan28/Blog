@@ -23,6 +23,13 @@ pipeline {
             }
         }
 
+        stage('Generate Key') {
+            steps {
+                sh 'cp .env.example .env'
+                sh 'php artisan key:generate --force'  
+            }
+        }
+
         stage('Run Tests') {
             steps {
                 script {
