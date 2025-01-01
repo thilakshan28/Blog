@@ -5,6 +5,7 @@ pipeline {
         GITHUB_CREDENTIALS = 'github-credentials'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         IMAGE_NAME = 'thilakshan28/blog' 
+        DB_CREDENTIALS = credentials('database-credentials')
     }
 
     stages {
@@ -16,7 +17,9 @@ pipeline {
 
         stage('Run Migrations') {
             steps {
-                sh 'php artisan migrate --force'
+                withCredentials([usernamePassword(credentialsId: 'db-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD')]) {
+                    sh 'php artisan migrate --force'
+                }
             }
         }
 
