@@ -29,19 +29,6 @@ pipeline {
             }
         }
 
-        stage('Deploy Locally') {
-            steps {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d' 
-            }
-        }
-
-        stage('Test Docker') {
-            steps {
-                sh 'docker ps'
-            }
-        }
-
         stage('Push to Docker Hub') {
             steps {
                 script {
@@ -51,6 +38,13 @@ pipeline {
                     docker logout
                     """
                 }
+            }
+        }
+
+        stage('Deploy Locally') {
+            steps {
+                sh 'docker compose down || true'
+                sh 'docker compose up -d' 
             }
         }
     }

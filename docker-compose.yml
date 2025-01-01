@@ -10,28 +10,17 @@ services:
       - 8000:8000
     volumes:
       - .:/app
-    depends_on:
-      - mysql
     environment:
-      - DB_HOST=mysql
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     networks:
       - application
     entrypoint: ['/bin/sh', '-c']
     command:
       - |
-        /app/wait-for-it.sh mysql -- composer install
+        composer install
         php artisan migrate
         php artisan serve --host=0.0.0.0 --port=8000
-
-  mysql:
-    image: mysql:8.0
-    ports:
-      - "3307:3306"
-    environment:
-      - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-    networks:
-      - application
