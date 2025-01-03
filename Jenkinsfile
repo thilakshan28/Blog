@@ -15,18 +15,18 @@ pipeline {
             }
         }
 
+        stage('Generate Key') {
+            steps {
+                sh 'cp .env.example .env'
+                sh 'php artisan key:generate --force'  
+            }
+        }
+
         stage('Run Migrations') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'database-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD')]) {
                     sh 'php artisan migrate --force'
                 }
-            }
-        }
-
-        stage('Generate Key') {
-            steps {
-                sh 'cp .env.example .env'
-                sh 'php artisan key:generate --force'  
             }
         }
 
