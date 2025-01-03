@@ -62,10 +62,14 @@ pipeline {
         stage('Deploy Locally') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'database-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD')]) {
-                    sh 'docker compose down || true'
-                    sh """
-                    DB_USERNAME=${DB_USERNAME} DB_PASSWORD=${DB_PASSWORD} docker compose up -d
-                    """
+                    script {
+                        sh """
+                        sed -i 's/^DB_USERNAME=.*/DB_USERNAME=${DB_USERNAME}/' .env
+                        sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD}/' .env
+                        """
+                        sh 'docker compose down || true'
+                        sh 'docker compose up -d'
+                    }
                 }
             }
         }
