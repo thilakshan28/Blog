@@ -60,9 +60,11 @@ pipeline {
         }
 
         stage('Deploy Locally') {
-            withCredentials([usernamePassword(credentialsId: 'database-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD')]) {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d' 
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'database-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD')]) {
+                    sh 'docker compose down || true'
+                    sh 'docker compose up -d' 
+                }
             }
         }
     }
